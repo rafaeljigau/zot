@@ -1,2 +1,2 @@
 # zot
-zot - A vendor-neutral OCI image repository server purely based on OCI Distribution Specification.
+zot - A vendor-neutral OCI image registry server purely based on OCI Distribution Specification.
