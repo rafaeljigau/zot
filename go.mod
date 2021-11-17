@@ -15,30 +15,29 @@ require (
 	github.com/containerd/containerd v1.5.7 // indirect
 	github.com/containers/common v0.26.0
 	github.com/containers/image/v5 v5.13.2
-	github.com/cpuguy83/go-md2man/v2 v2.0.1 // indirect
 	github.com/docker/distribution v2.7.1+incompatible
 	github.com/dustin/go-humanize v1.0.0
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a
 	github.com/go-ldap/ldap/v3 v3.4.1
 	github.com/gofrs/uuid v4.0.0+incompatible
-	github.com/golang/mock v1.6.0 // indirect
-	github.com/google/go-containerregistry v0.6.0
+	github.com/google/go-containerregistry v0.6.1-0.20210922191434-34b7f00d7a60
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/json-iterator/go v1.1.11
-	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/mitchellh/mapstructure v1.4.2
 	github.com/nmcclain/ldap v0.0.0-20210720162743-7f8d1e44eeba
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/opencontainers/distribution-spec/specs-go v0.0.0-20210830161531-162b5c95788b
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/opencontainers/image-spec v1.0.2-0.20190823105129-775207bd45b6
+	github.com/opencontainers/image-spec v1.0.2-0.20210730191737-8e42a01fb1b7
 	github.com/opencontainers/umoci v0.4.8-0.20210922062158-e60a0cc726e6
 	github.com/phayes/freeport v0.0.0-20180830031419-95f893ade6f2
 	github.com/prometheus/client_golang v1.11.0
 	github.com/prometheus/client_model v0.2.0
 	github.com/rs/zerolog v1.22.0
+	github.com/sigstore/cosign v1.3.0
+	github.com/sigstore/sigstore v0.0.0-20211005102407-3ab959fb2809
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1
@@ -49,7 +48,6 @@ require (
 	github.com/vektah/gqlparser/v2 v2.2.0
 	go.etcd.io/bbolt v1.3.6
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
-	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect
 	gopkg.in/resty.v1 v1.12.0
 	gopkg.in/yaml.v2 v2.4.0
 )

@@ -10,6 +10,7 @@ import (
 	"github.com/anuvu/zot/pkg/api/config"
 	"github.com/anuvu/zot/pkg/extensions/search"
 	cveinfo "github.com/anuvu/zot/pkg/extensions/search/cve"
+	"github.com/anuvu/zot/pkg/extensions/sign"
 	"github.com/anuvu/zot/pkg/extensions/sync"
 	"github.com/anuvu/zot/pkg/log"
 	"github.com/anuvu/zot/pkg/storage"
@@ -84,6 +85,14 @@ func EnableSyncExtension(config *config.Config, log log.Logger, storeController 
 		}
 	} else {
 		log.Info().Msg("Sync registries config not provided, skipping sync")
+	}
+}
+
+func EnableSignExtension(config *config.Config, log log.Logger, address string, port string, is storage.ImageStore) {
+	if config.Extensions.Sign != nil {
+		sign.Run(config.Extensions.Sign, log, address, port, is)
+	} else {
+		log.Info().Msg("No sign verification")
 	}
 }
 

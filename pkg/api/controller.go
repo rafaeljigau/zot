@@ -100,6 +100,8 @@ func (c *Controller) Run() error {
 	c.Metrics = monitoring.NewMetricsServer(enabled, c.Log)
 	c.StoreController = storage.StoreController{}
 
+	channel := make(chan int, 1)
+
 	if c.Config.Storage.RootDirectory != "" {
 		if c.Config.Storage.Dedupe {
 			err := storage.ValidateHardLink(c.Config.Storage.RootDirectory)
@@ -140,6 +142,10 @@ func (c *Controller) Run() error {
 
 			if c.Config.Extensions.Sync != nil {
 				ext.EnableSyncExtension(c.Config, c.Log, c.StoreController)
+			}
+
+			if c.Config.Extensions.Sign != nil {
+				ext.EnableSignExtension(c.Config, c.Log, c.Config.HTTP.Address, c.Config.HTTP.Port, c.StoreController.DefaultStore)
 			}
 		}
 	} else {
@@ -199,6 +205,7 @@ func (c *Controller) Run() error {
 
 	monitoring.SetServerInfo(c.Metrics, c.Config.Commit, c.Config.BinaryType, c.Config.GoVersion, c.Config.Version)
 	_ = NewRouteHandler(c)
+	channel <- 1
 
 	addr := fmt.Sprintf("%s:%s", c.Config.HTTP.Address, c.Config.HTTP.Port)
 	server := &http.Server{

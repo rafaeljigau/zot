@@ -1,0 +1,23 @@
+{
+	"version": "0.1.0-dev",
+    "storage": {
+        "rootDirectory": "/home/rafael/Downloads/zot-repo"
+    },
+    "http": {
+        "address": "127.0.0.1",
+        "port": "8080",
+        "ReadOnly": false
+    },
+    "log": {
+        "level": "debug"
+    },
+	"extensions": {
+		"sign": {
+            "verificationInterval": "1m",
+            "publicKeys":{
+                "runner": "/home/rafael/Downloads/keys1/cosign.pub",
+                "r": "key"
+            }
+		}
+	}
+}

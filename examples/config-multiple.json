@@ -5,15 +5,15 @@
         "dedupe": true,
         "gc": true,
         "subPaths": {
-            "/a": {
+            "/golang": {
                 "rootDirectory": "/tmp/zot1",
                 "dedupe": true
             },
-            "/b": {
+            "/grafana": {
                 "rootDirectory": "/tmp/zot2",
                 "dedupe": true
             },
-            "/c": {
+            "/alpine": {
                 "rootDirectory": "/tmp/zot3",
                 "dedupe": false
             }
