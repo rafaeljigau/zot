@@ -12,27 +12,11 @@
       "key":"test/data/server.key"
     },
     "auth": {
-      "ldap": {
-        "address":"ldap.example.org",
-        "port":389,
-        "startTLS":false,
-        "baseDN":"ou=Users,dc=example,dc=org",
-        "userAttribute":"uid",
-        "bindDN":"cn=ldap-searcher,ou=Users,dc=example,dc=org",
-        "bindPassword":"ldap-searcher-password",
-        "skipVerify":false,
-        "subtreeSearch":true
-      },
-      "htpasswd": {
-        "path": "test/data/htpasswd"
-      },
       "failDelay": 5
     },
     "allowReadAccess": false
   },
   "log":{
-    "level":"debug",
-    "output":"/tmp/zot.log",
-    "audit": "/tmp/zot-audit.log"
+    "level":"debug"
   }
 }

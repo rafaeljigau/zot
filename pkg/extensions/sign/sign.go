@@ -1,20 +1,14 @@
 package sign
 
 import (
-	"context"
-	"os"
-	"path/filepath"
-	"time"
+	"fmt"
 
 	"github.com/anuvu/zot/pkg/log"
 	"github.com/anuvu/zot/pkg/storage"
-	"github.com/sigstore/cosign/cmd/cosign/cli/options"
-	"github.com/sigstore/cosign/pkg/cosign"
 )
 
 type Repo struct {
-	PublicKey    string
-	Verified     bool
+	IsValidated  bool
 	VisitedCount int
 }
 
@@ -25,7 +19,16 @@ type Config struct {
 
 func Run(config *Config, log log.Logger, address string, port string, is storage.ImageStore) {
 
-	timeInterval, _ := time.ParseDuration(config.VerificationInterval)
+	go func() {
+		verifyOption := VerifyOptions{
+			Fingerprint: "/home/rafael/Downloads/keys1/cosign.pub",
+			InputData:   "/home/rafael/Downloads/zot-repo/runner/index.json",
+		}
+		err := verifyOption.verifyCosign()
+		fmt.Println(err)
+	}()
+
+	/*timeInterval, _ := time.ParseDuration(config.VerificationInterval)
 	ticker := time.NewTicker(timeInterval)
 
 	registryOptions := options.RegistryOptions{
@@ -37,6 +40,7 @@ func Run(config *Config, log log.Logger, address string, port string, is storage
 	if err != nil {
 		log.Error().Err(err).Msg("constructing client options")
 	}
+	reposMap := make(map[string]*Repo)
 
 	go func() {
 
@@ -55,19 +59,60 @@ func Run(config *Config, log log.Logger, address string, port string, is storage
 			}
 
 			for _, repo := range repos {
-				repoPath := is.RootDir()
-				repoPath = filepath.Join(repoPath, repo)
-				info, err := os.Lstat(repoPath)
-
-				if err != nil {
-					log.Error().Err(err).Msg("error while getting repository stats")
+				_, ok := reposMap[repo]
+				if !ok {
+					reposMap[repo] = &Repo{}
 				}
+				if !reposMap[repo].IsValidated && reposMap[repo].VisitedCount < 2 {
+					repoPath := is.RootDir()
+					repoPath = filepath.Join(repoPath, repo)
+					info, err := os.Lstat(repoPath)
 
-				err = verifyImage(repo, info, is, config.PublicKeys[repo], address, port, co)
-				if err != nil {
-					log.Error().Err(err).Msg("Can't verify!")
+					if err != nil {
+						log.Error().Err(err).Msg("error while getting repository stats")
+					}
+
+					err = verifyImage(repo, info, is, config.PublicKeys[repo], address, port, co)
+					if errors.Is(err, ErrNoSignatureProvided) {
+						log.Error().Err(err).Msg("K")
+					} else if err != nil {
+						log.Error().Err(err).Msg("A")
+					} else {
+						reposMap[repo].IsValidated = true
+					}
+					reposMap[repo].VisitedCount++
+				}
+				if reposMap[repo].VisitedCount == 2 {
+					dir := path.Join(is.RootDir(), repo)
+
+					is.RLock()
+					defer is.RUnlock()
+
+					buf, err := ioutil.ReadFile(path.Join(dir, "index.json"))
+					if err != nil {
+						log.Error().Err(err).Str("dir", dir).Msg("failed to read index.json")
+					}
+
+					var index ispec.Index
+
+					if err := json.Unmarshal(buf, &index); err != nil {
+						log.Error().Err(err).Str("dir", dir).Msg("invalid JSON")
+					}
+
+					digest := index.Manifests[0].Digest.String()
+
+					err = is.DeleteImageManifest(repo, string(digest))
+					if err != nil {
+						log.Error().Err(err).Msg("cant delete manifest:(")
+					}
+					delete(reposMap, repo)
+
+					if len(index.Manifests) == 0 {
+						os.RemoveAll(dir)
+					}
 				}
 			}
 		}
 	}()
+	*/
 }

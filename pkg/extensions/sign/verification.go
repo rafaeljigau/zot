@@ -3,6 +3,7 @@ package sign
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io/fs"
 	"path/filepath"
 	"strings"
@@ -14,6 +15,10 @@ import (
 	"github.com/sigstore/cosign/pkg/cosign"
 	sigs "github.com/sigstore/cosign/pkg/signature"
 	"github.com/sigstore/sigstore/pkg/signature"
+)
+
+var (
+	ErrNoSignatureProvided = errors.New("No key provided")
 )
 
 func verifyImage(repo string, info fs.FileInfo, is storage.ImageStore, keyPath string, address string, port string, co *cosign.CheckOpts) error {
@@ -49,7 +54,10 @@ func verifyImage(repo string, info fs.FileInfo, is storage.ImageStore, keyPath s
 			return err
 		}
 
+		fmt.Println("Inainte de verificare!")
+
 		verified, bundleVerified, err := cosign.VerifySignatures(context.TODO(), ref, co)
+
 		if err != nil {
 			return err
 		}
@@ -59,5 +67,5 @@ func verifyImage(repo string, info fs.FileInfo, is storage.ImageStore, keyPath s
 
 		return nil
 	}
-	return errors.New("No key provided for repository " + repo)
+	return ErrNoSignatureProvided
 }
